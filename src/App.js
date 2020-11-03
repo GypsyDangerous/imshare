@@ -9,6 +9,18 @@ function App() {
 	const { getRootProps, getInputProps } = useDropzone({
 		accept: "image/*",
 		onDrop: useCallback(acceptedFiles => {
+			(async () => {
+				const body = new FormData();
+				body.append("image", acceptedFiles[0]);
+
+				const response = await fetch("http://localhost:1800/api/v1/upload", {
+					method: "POST",
+					body,
+				});
+				const json = await response.json()
+				console.log(json)
+			})();
+
 			acceptedFiles.forEach(file => {
 				const reader = new FileReader();
 
