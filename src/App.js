@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.scss";
+import { useState, useMemo, useCallback, useRef } from "react";
+import { useDropzone } from "react-dropzone";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [files, setFiles] = useState([]);
+	const inputRef = useRef()
+
+	const { getRootProps, getInputProps, isDragActive } = useDropzone({
+		accept: "image/*",
+		onDrop: useCallback(acceptedFiles => {
+			setFiles(
+				acceptedFiles.map(file =>
+					Object.assign(file, { preview: URL.createObjectURL(file) })
+				)
+			);
+		}, []),
+	});
+
+	const images = useMemo(() => {
+		return files.map(file => (
+			<div key={file.name}>
+				<div>
+					<img src={file.preview} width="200" alt={`${file.name} preview`} />
+				</div>
+			</div>
+		));
+	}, [files]);
+
+	return (
+		<div className="App">
+			<main>
+				<h1>Upload your image</h1>
+				<h2>File should be Jpeg, Png,...</h2>
+				<div className="drag-area" {...getRootProps()}>
+					<input ref={inputRef} {...getInputProps()} />
+					{images.length ? (
+						images[0]
+					) : (
+						<>
+							<img src={`/preview.svg`} alt="" />
+							<p>{"Drag & Drop your image here"}</p>
+						</>
+					)}
+				</div>
+				<h3>Or</h3>
+				<button onClick={() => document.querySelector(".drag-area input").click()}>Choose a file</button>
+			</main>
+		</div>
+	);
 }
 
 export default App;
