@@ -6,9 +6,21 @@ function App() {
 	const [files, setFiles] = useState([]);
 	const inputRef = useRef();
 
-	const { getRootProps, getInputProps, isDragActive } = useDropzone({
+	const { getRootProps, getInputProps } = useDropzone({
 		accept: "image/*",
 		onDrop: useCallback(acceptedFiles => {
+			acceptedFiles.forEach(file => {
+				const reader = new FileReader();
+
+				reader.onabort = () => console.log("file reading was aborted");
+				reader.onerror = () => console.log("file reading has failed");
+				reader.onload = () => {
+					// Do whatever you want with the file contents
+					const binaryStr = reader.result;
+					console.log(binaryStr);
+				};
+				reader.readAsArrayBuffer(file);
+			});
 			setFiles(
 				acceptedFiles.map(file =>
 					Object.assign(file, { preview: URL.createObjectURL(file) })
@@ -52,9 +64,7 @@ function App() {
 					)}
 				</div>
 				<h3>Or</h3>
-				<button onClick={() => inputRef.current.click()}>
-					Choose a file
-				</button>
+				<button onClick={() => inputRef.current.click()}>Choose a file</button>
 			</main>
 		</div>
 	);
