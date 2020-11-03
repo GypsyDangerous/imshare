@@ -10,7 +10,7 @@
 		border-radius: 12px;
 		padding: 32px;
 		width: 402px;
-		height: 469px;
+		// height: 469px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -34,7 +34,8 @@
 .drag-area {
 	width: 100%;
 	padding: 1rem;
-	min-height: 200px;
+	// height: fit-content;
+	// min-height: 200px;
 	border: 2px dashed #97bef4;
 	border-radius: 12px;
 	display: flex;
@@ -42,6 +43,13 @@
 	justify-content: center;
 	flex-direction: column;
 	cursor: pointer;
+	p{
+		margin-bottom: 0;
+	}
+	img:not(#preview){
+		width: 100%;
+  		height: auto;
+	}
 }
 
 h1 {
@@ -65,4 +73,11 @@ h2,
 h3,
 p {
 	color: #888;
+}
+
+.loader{
+	width: 100%;
+	* {
+		border-radius: 50px;
+	}
 }
