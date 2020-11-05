@@ -66,7 +66,7 @@ function App() {
 					const body = new FormData();
 					body.append("image", acceptedFiles[0]);
 
-					const response = await fetch("http://localhost:1800/api/v1/upload", {
+					const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/upload`, {
 						method: "POST",
 						body,
 					});
